@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import "./page.scss";
 import HttpService from '@/app/services/httpService';
+import { IAuthentication } from '@/app/interfaces/authentication';
+import { saveTokensToLocalStorage } from '@/app/services/tokenService';
 
 export default function Login() {
 
@@ -24,8 +26,8 @@ export default function Login() {
 
     const authentication = async () => {
         const authBody = { username: loginInfo.username, password: loginInfo.password };
-        const response = await httpService.post('/api/token/', authBody);
-        console.log(response);
+        const response: IAuthentication = await httpService.post('/api/token/', authBody);
+        saveTokensToLocalStorage(response.access, response.refresh);
     };
 
     return (
